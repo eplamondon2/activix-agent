@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer').default || require('nodemailer');
 
 const transporter = nodemailer.createTransporter({
   host: process.env.SMTP_HOST,
