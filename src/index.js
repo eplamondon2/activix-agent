@@ -64,7 +64,37 @@ app.post('/edit/:token', async (req, res) => {
     res.status(500).send('<h2>Erreur lors de l\'envoi.</h2>');
   }
 });
+app.get('/test', async (req, res) => {
+  const testLead = {
+    event_type: 'new_lead',
+    lead: {
+      id: 'TEST-001',
+      first_name: 'Jean',
+      last_name: 'Tremblay',
+      email: req.query.email || 'test@test.com',
+      phone: '4185551234',
+      source: req.query.source || 'Site web',
+      notes: 'Bonjour, je suis intéressé par un Hyundai Tucson 2024',
+      vehicle: { make: 'Hyundai', model: 'Tucson', year: '2024' }
+    }
+  };
 
+  try {
+    await handleActivixWebhook(testLead);
+    res.send(`
+      <html><body style="font-family:Arial;text-align:center;padding:50px">
+        <h1 style="color:#28a745">✅ Test envoyé !</h1>
+        <p>Un lead fictif <strong>Jean Tremblay</strong> a été créé.</p>
+        <p>Le premier conseiller de la rotation devrait recevoir un email et un SMS dans quelques secondes.</p>
+        <hr>
+        <p>Tester Auto Fiset : <a href="/test?source=Auto Fiset">Cliquez ici</a></p>
+        <p>Tester Hyundai : <a href="/test?source=Site web">Cliquez ici</a></p>
+      </body></html>
+    `);
+  } catch (error) {
+    res.status(500).send(`<h2>❌ Erreur : ${error.message}</h2>`);
+  }
+});
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Activix Agent IA', timestamp: new Date().toISOString() });
 });
