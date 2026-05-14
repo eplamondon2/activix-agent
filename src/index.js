@@ -80,8 +80,17 @@ app.get('/test', async (req, res) => {
   };
 
   try {
-    await handleActivixWebhook(testLead);
     res.send(`
+      <html><body style="font-family:Arial;text-align:center;padding:50px">
+        <h1 style="color:#28a745">✅ Test envoyé !</h1>
+        <p>Un lead fictif <strong>Jean Tremblay</strong> a été créé.</p>
+        <p>Le premier conseiller de la rotation devrait recevoir un email et un SMS dans quelques secondes.</p>
+        <hr>
+        <p>Tester Auto Fiset : <a href="/test?source=Auto Fiset">Cliquez ici</a></p>
+        <p>Tester Hyundai : <a href="/test?source=Site web">Cliquez ici</a></p>
+      </body></html>
+    `);
+    handleActivixWebhook(testLead).catch(err => console.error('Erreur test:', err));
       <html><body style="font-family:Arial;text-align:center;padding:50px">
         <h1 style="color:#28a745">✅ Test envoyé !</h1>
         <p>Un lead fictif <strong>Jean Tremblay</strong> a été créé.</p>
